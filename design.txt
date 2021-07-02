@@ -1,0 +1,20 @@
+
+Blaseball PowerPoint
+
+- for each game, pick a presentation style
+- for each at-bat, generate a slide
+    - select from various layouts
+    - select bad clipart based on the result of the play
+    - play text and score ledger as bulleted items revealed one at a time
+    - slide title as batter name etc
+- for start/end of inning and batters coming up, use title/subtitle slides
+- cheesy slide transition animations
+- bonus if I record myself as if giving a presentation
+
+Could use Tracery to construct the layouts?!
+- YES let's try that
+
+
+Blaseball Summarized
+
+- Use Tracery to make a more natural description of the games

@@ -1,0 +1,14 @@
+html {
+	padding:0px;
+	margin:0px;
+	height:100%;
+	font-family:"Trebuchet MS",Helvetica,sans-serif;
+}
+
+body {
+	background-color:rgba(30, 126, 220, .2);
+	padding:0px;
+	margin:0px;
+	height:100%;
+}
+
