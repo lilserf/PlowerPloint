@@ -14,6 +14,17 @@ Blaseball PowerPoint
 Could use Tracery to construct the layouts?!
 - YES let's try that
 
+TODO:
+- more animations
+- solve /replay "end" issue
+- emoji as an option for teams
+- clip art
+- actual first style
+- second style
+- dropdown to choose which game
+- team colors?
+
+
 
 Blaseball Summarized
 

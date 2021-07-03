@@ -21,6 +21,14 @@ var baseEngModifiers = {
 		return s.replace(new RegExp(escapeRegExp(params[0]), 'g'), params[1]);
 	},
 
+	topBottom : function(s) {
+		var top = (s === 'true')
+		if(top)
+			return "Top of";
+		else
+			return "Bottom of";
+	},
+
 	th : function(s) {
 
 		var num = parseInt(s, 10);
