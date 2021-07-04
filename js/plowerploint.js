@@ -18,6 +18,12 @@ function updateGrammar(grammar, gameUpdate)
     }
 }
 
+const Images = 
+{
+    HIT: "https://www.pinclipart.com/picdir/big/123-1234276_hitting-a-baseball-clipart-amp-hitting-a-baseball.png",
+    WALK: "https://www.pinclipart.com/picdir/big/564-5646339_walking-clipart.png",
+}
+
 const UpdateType = 
 {
     BATTER: "new_batter",
@@ -26,16 +32,24 @@ const UpdateType =
     NONE: "none",
 }
 
+const PlayType =
+{
+    HIT: "hit",
+    UNKNOWN: "unknown",
+}
+
 const regexBatter = /batting for the/g;
 const regexInning = /(Top of \d)|(Bottom of \d)/g;
 const regexElsewhere = /is Elsewhere/g;
-
+const regexHit = /hits a /g;
+const regexWalk = /draws a walk/g;
 
 function getUpdateInfo(gameUpdate)
 {
     var info = {};
 
     info.type = UpdateType.NONE;
+    info.playType = PlayType.UNKNOWN;
 
     if(gameUpdate.lastUpdate.match(regexBatter))
         info.type = UpdateType.BATTER;
@@ -43,6 +57,11 @@ function getUpdateInfo(gameUpdate)
         info.type = UpdateType.INNING;
     if(gameUpdate.lastUpdate.match(regexElsewhere))
         info.type = UpdateType.ELSEWHERE;
+
+    if(gameUpdate.lastUpdate.match(regexHit))
+        info.playType = PlayType.HIT;
+    if(gameUpdate.lastUpdate.match(regexWalk))
+        info.playType = PlayType.WALk;
 
     return info;
 }
@@ -105,7 +124,7 @@ function newSlide(grammar, info)
     $("#body").html("<ul></ul>");
 }
 
-function addUpdateAsBodyBullet(grammar, gameUpdate)
+function addUpdateAsBodyBullet(grammar, gameUpdate, info)
 {
     latest = grammar.expand("#body#").finishedText;
     var body = $("#body");
@@ -126,6 +145,20 @@ function addUpdateAsBodyBullet(grammar, gameUpdate)
         if(gameUpdate.scoreUpdate != "")
             sublist.append("<li>" + gameUpdate.scoreUpdate + "</li>");
     }
+
+    if(info.playType == PlayType.HIT)
+    {
+        $("#clipart").html("<img src='"+Images.HIT+"'/>");
+    }
+    else if(info.playType == PlayType.WALK)
+    {
+        $("#clipart").html("<img src='"+Images.WALK+"'/>");
+    }
+    else
+    {
+        $("#clipart").html("");
+    }
+
 
 }
 
@@ -160,7 +193,7 @@ function updateGame(gameUpdate)
     {
         if(lastInfo.type == UpdateType.BATTER)
             newSlide(grammar, info);
-        addUpdateAsBodyBullet(grammar, gameUpdate);
+        addUpdateAsBodyBullet(grammar, gameUpdate, info);
     }
 
     lastInfo = info;
@@ -173,6 +206,7 @@ var lastBatter;
 var gameId = undefined;
 var lastInfo;
 var play = true;
+const GAME_INDEX = 2;
 
 $("#stopStart").click(function() { play = !play; });
 
@@ -185,7 +219,7 @@ evtSource.onmessage = function(event)
 
         if(gameId === undefined)
         {
-            gameId = games[1].id;
+            gameId = games[GAME_INDEX].id;
         }
         // TODO: pick what game to care about
         oneGame = games.filter(function(x) { return x.id === gameId; })[0];
