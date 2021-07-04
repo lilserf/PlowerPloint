@@ -164,6 +164,13 @@ function addUpdateAsBodyBullet(grammar, gameUpdate, info)
 
 function updateGame(gameUpdate)
 {
+    if(lastUpdate != undefined 
+        && lastUpdate.lastUpdate === gameUpdate.lastUpdate 
+        && lastUpdate.eventIndex === gameUpdate.eventIndex)
+    {
+        return;
+    }
+
     $("#debugOutput").text(gameUpdate.lastUpdate);
     var info = getUpdateInfo(gameUpdate);
 
@@ -197,6 +204,7 @@ function updateGame(gameUpdate)
     }
 
     lastInfo = info;
+    lastUpdate = gameUpdate;
 }
 
 
@@ -205,6 +213,7 @@ const evtSource = new EventSource("https://api.sibr.dev/replay/v1/replay?from=20
 var lastBatter;
 var gameId = undefined;
 var lastInfo;
+var lastUpdate;
 var play = true;
 const GAME_INDEX = 2;
 
