@@ -238,15 +238,16 @@ const startTime = "2021-07-01T01:00:08.17Z";
 const archivalUrl = "https://api.sibr.dev/replay/v1/replay?from="+startTime;
 const blaseballUrl = "https://api.sibr.dev/corsmechanics/www.blaseball.com/events/streamData";
 
-//const evtSource = new EventSource(archivalUrl);
-const evtSource = new EventSource(blaseballUrl);
+const evtSource = new EventSource(archivalUrl);
+//const evtSource = new EventSource(blaseballUrl);
 
 var lastBatter;
 var gameId = undefined;
 var lastInfo;
 var lastUpdate;
 var play = true;
-const GAME_INDEX = 2;
+// Just hacked to pick a game right now - this one is the Steaks for the archival URL!
+const GAME_INDEX = 6;
 
 $("#stopStart").click(function() { play = !play; });
 
