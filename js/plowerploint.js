@@ -18,10 +18,20 @@ function updateGrammar(grammar, gameUpdate)
     }
 }
 
-const Images = 
+const Images =
 {
-    HIT: "https://www.pinclipart.com/picdir/big/123-1234276_hitting-a-baseball-clipart-amp-hitting-a-baseball.png",
-    WALK: "https://www.pinclipart.com/picdir/big/564-5646339_walking-clipart.png",
+    hit: 5,
+    out: 5,
+    strikeout: 5,
+    walk: 4,
+    sacrifice: 2,
+    choice: 5,
+}
+
+function getImage(type)
+{
+    index = Math.floor(Math.random() * Images[type]);
+    return "images/" + type + "/" + index + ".png";
 }
 
 const UpdateType = 
@@ -35,14 +45,25 @@ const UpdateType =
 const PlayType =
 {
     HIT: "hit",
+    OUT: "out",
+    STRIKEOUT: "strikeout",
+    WALK: "walk",
+    CHOICE: "choice",
+    SACRIFICE: "sacrifice",
     UNKNOWN: "unknown",
 }
+
+
 
 const regexBatter = /batting for the/g;
 const regexInning = /(Top of \d)|(Bottom of \d)/g;
 const regexElsewhere = /is Elsewhere/g;
 const regexHit = /hits a /g;
 const regexWalk = /draws a walk/g;
+const regexOut = /(hit a ground out)|(hit a flyout)/g;
+const regexStrikeout = /strikes out/g;
+const regexChoice = /fielder's choice/g;
+const regexSacrifice = /on the sacrifice/g;
 
 function getUpdateInfo(gameUpdate)
 {
@@ -61,7 +82,15 @@ function getUpdateInfo(gameUpdate)
     if(gameUpdate.lastUpdate.match(regexHit))
         info.playType = PlayType.HIT;
     if(gameUpdate.lastUpdate.match(regexWalk))
-        info.playType = PlayType.WALk;
+        info.playType = PlayType.WALK;
+    if(gameUpdate.lastUpdate.match(regexOut))
+        info.playType = PlayType.OUT;
+    if(gameUpdate.lastUpdate.match(regexStrikeout))
+        info.playType = PlayType.STRIKEOUT;
+    if(gameUpdate.lastUpdate.match(regexChoice))
+        info.playType = PlayType.CHOICE;
+    if(gameUpdate.lastUpdate.match(regexSacrifice))
+        info.playType = PlayType.SACRIFICE;
 
     return info;
 }
@@ -146,13 +175,9 @@ function addUpdateAsBodyBullet(grammar, gameUpdate, info)
             sublist.append("<li>" + gameUpdate.scoreUpdate + "</li>");
     }
 
-    if(info.playType == PlayType.HIT)
+    if(info.playType != PlayType.UNKNOWN)
     {
-        $("#clipart").html("<img src='"+Images.HIT+"'/>");
-    }
-    else if(info.playType == PlayType.WALK)
-    {
-        $("#clipart").html("<img src='"+Images.WALK+"'/>");
+        $("#clipart").html("<img src='"+getImage(info.playType)+"'/>");
     }
     else
     {
@@ -208,7 +233,13 @@ function updateGame(gameUpdate)
 }
 
 
-const evtSource = new EventSource("https://api.sibr.dev/replay/v1/replay?from=2021-07-01T01:00:08.17Z");
+const startTime = "2021-07-01T01:00:08.17Z";
+
+const archivalUrl = "https://api.sibr.dev/replay/v1/replay?from="+startTime;
+const blaseballUrl = "https://api.sibr.dev/corsmechanics/www.blaseball.com/events/streamData";
+
+//const evtSource = new EventSource(archivalUrl);
+const evtSource = new EventSource(blaseballUrl);
 
 var lastBatter;
 var gameId = undefined;

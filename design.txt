@@ -20,19 +20,13 @@ TODO:
 - team colors?
 - add "battingTeam" so I can do "Now batting for the Steaks, ..."
 - more clipart
-    - outs
-    - strikeouts
     - home runs
-    - sacrifice
     - multiples for Hit
         - or better/cooler for double/triple
+    - double play
 - slide types
     - game end
     - inning is now an outing (with current score)
         - "after 3 innings, the Foo lead 3-1"
         - "The score after 3: Foo 3, Bar 1"
 
-
-Blaseball Summarized
-
-- Use Tracery to make a more natural description of the games
